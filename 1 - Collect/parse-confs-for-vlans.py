@@ -7,10 +7,6 @@ outfilename="switch-vlans.csv"
 
 fields = ['vlan_name','vlan_ip','vlan_mask','vlan_vrrp_ip','vlan_vdom']
 
-def read_file_to_str(fname):
-    with open(fname,'U') as fh:
-        return fh.read()
-
 def read_file_to_list(fname):
     with open(fname,'U') as fh:
         return [line.rstrip("\n") for line in fh]
@@ -19,24 +15,17 @@ def write_list_to_file(fname,list):
     with open(fname,'w') as fh:
         fh.write('\n'.join(list))
 
-vlans=dict()
-
-vlans["dc1-sw1"]=dict()
-vlans["dc1-sw2"]=dict()
-vlans["dc2-sw1"]=dict()
-vlans["dc2-sw2"]=dict()
-vlans["fw"]=dict()
-
-
-
-vlans["dc1-sw1"]["file"]=read_file_to_list("DC1-SW1-Config.txt")
-vlans["dc1-sw2"]["file"]=read_file_to_list("DC1-SW2-Config.txt")
-vlans["dc2-sw1"]["file"]=read_file_to_list("DC2-SW1-Config.txt")
-vlans["dc2-sw2"]["file"]=read_file_to_list("DC2-SW2-Config.txt")
-vlans["fw"]["file"]=read_file_to_list("Firewall-Config.txt")
-
 switches=['dc1-sw1','dc1-sw2','dc2-sw1','dc2-sw2']
 all_devices=switches + ['fw']
+
+vlans={		
+	"dc1-sw1":{"file":read_file_to_list("DC1-SW1-Config.txt")}, 
+	"dc1-sw2":{"file":read_file_to_list("DC1-SW2-Config.txt")},
+	"dc2-sw1":{"file":read_file_to_list("DC2-SW1-Config.txt")},
+	"dc2-sw2":{"file":read_file_to_list("DC2-SW2-Config.txt")},
+	"fw":{"file":read_file_to_list("Firewall-Config.txt")}
+}
+
 
 for switch_name in all_devices:
     vlans[switch_name]["vlans"]=dict()
